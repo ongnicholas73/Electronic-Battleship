@@ -3,16 +3,21 @@ console.log("******** script is running");
 const shipData = {
   direction: 0,
   startLocation: {
-    row: "A",
-    col: "1",
+    row: 1,
+    col: 1,
   },
   length: 6,
 };
 
 const generateShip = (shipData) => {
   if (shipData.direction === 0) {
-    for (let i = 0; i < array.length; i++) {
-      document.querySelector(`.cell-row#${shipData.startLocation}`);
+    for (let i = 0; i < shipData.length; i++) {
+      const query = `#${shipData.startLocation.row} .${
+        shipData.startLocation.col + i
+      }`;
+      document.querySelector(query).style.backgroundColor = "red";
     }
   }
 };
+
+generateShip(shipData);
