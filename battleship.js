@@ -1,69 +1,63 @@
 console.log("******** script is running");
 
-const shipData = {
-  direction: 0, // 0 horizontal, 1 vertical
-  startLocation: {
-    row: 1,
-    col: 1,
-  },
-  length: 6,
-};
+const getRand = (max) => {
+  return Math.floor(Math.random() * max); 
+}
 
-const determineNumText = (number) => {
-  let result = "";
-  switch (number) {
-    case 1:
-      result = "one";
-      break;
-    case 2:
-      result = "two";
-      break;
-    case 3:
-      result = "three";
-      break;
-    case 4:
-      result = "four";
-      break;
-    case 5:
-      result = "five";
-      break;
-    case 6:
-      result = "six";
-      break;
-    case 7:
-      result = "seven";
-      break;
-    case 8:
-      result = "eight";
-      break;
-    case 9:
-      result = "nine";
-      break;
-    case 10:
-      result = "ten";
-      break;
-    case 11:
-      result = "twelve";
-      break;
-    default:
-      break;
+console.log(getRand(2))
+
+const generateShipData = () => {
+  const shipData = [];
+
+  for (let i = 0; i < 6; i++) {    
+    const shipDatum = {
+      direction: getRand(2), // 0 horizontal, 1 vertical
+      startLocation: {
+        row: getRand(12) + 1,
+        col: getRand(12) + 1,
+      },
+      length: getRand(6) + 1,
+    };
+
+    shipData.push(shipDatum)
   }
 
-  return result
-};
+  return shipData;
+}
+
+console.log(generateShipData())
 
 // generate a ship
-const generateShip = (shipData) => {
+const placeShips = (shipData) => {
   if (shipData.direction === 0) {
     for (let i = 0; i < shipData.length; i++) {
-      const query = `#${shipData.startLocation.row} .${
-        determineNumText(shipData.startLocation.col)
-      }`;
-
+      const query = `#row-${shipData.startLocation.row} [data="${shipData.startLocation.row + i}"]`;
       console.log(query);
-      document.querySelector(query).style.backgroundColor = "red";
+      if (document.querySelector(query)) {
+        document.querySelector(query).style.backgroundColor = "red";
+      }
+    }
+  } else if (shipData.direction === 1) {
+    for (let i = 0; i < shipData.length; i++) {
+      const query = `#row-${shipData.startLocation.row + i} [data="${shipData.startLocation.col}"]`;
+      console.log(query);
+      if (document.querySelector(query)) {
+        document.querySelector(query).style.backgroundColor = "red";
+      }
     }
   }
 };
 
-generateShip(shipData);
+// const generateShipData = (numOfShips) => {
+//   const shipData = [];
+//   for (let i = 0; i < numOfShips; i++) {
+//     const direction = getRand(2);
+//     const length = getRand(6) + 1;
+//   }
+// }
+
+const ships = generateShipData();
+
+for (let i = 0; i < ships.length; i++) {
+  placeShips(ships[i]);
+}
